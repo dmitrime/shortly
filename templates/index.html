@@ -12,6 +12,8 @@
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.min.js" ></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.5.5/clipboard.min.js"></script>
+    <script src="{{ url_for('static', filename='jquery.qrcode-0.12.0.min.js') }}"></script>
+
 
     <script type="text/javascript" language="javascript">
        $(document).ready(function() {
@@ -20,6 +22,7 @@
           $('form input').change(function(e) {
               $('#short-url').hide();
               $('#short-url a').remove();
+              $('#qrcode').empty();
           });
 
           console.log($('form').serialize());
@@ -35,6 +38,11 @@
                               var link = "http://{{ request.host }}/" + response;
                               $('#short-url').prepend("<a href=" + link + ">" + link + "</a>");
                               $('#short-url').toggle();
+                              $('#qrcode').qrcode({
+                                  "size": 100,
+                                  "color": "#3a3",
+                                  "text": link
+                              });
                           },
                           error: function(error) {
                               console.log(error);
@@ -72,6 +80,7 @@
                 Copy
             </button>
         </div>
+        <div style="margin: 1em" id="qrcode"></div>
 
         </div>
     </div>
