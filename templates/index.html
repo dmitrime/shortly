@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="description" content="Shortly the URL shortener!">
+
+    <title>Shortly</title>
+
+    <link rel="stylesheet" href="http://yui.yahooapis.com/pure/0.6.0/pure-min.css"/>
+    <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Raleway:200"/>
+    <link rel=stylesheet type=text/css href="{{ url_for('static', filename='style.css') }}"/>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.min.js" ></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.5.5/clipboard.min.js"></script>
+
+    <script type="text/javascript" language="javascript">
+       $(document).ready(function() {
+          var clipboard = new Clipboard('.clip-button');
+
+          $('form input').change(function(e) {
+              $('#short-url').hide();
+              $('#short-url a').remove();
+          });
+
+          console.log($('form').serialize());
+          $('form button').click(function(event){
+
+              if ($('#short-url a').length == 0) {
+                  $.ajax({
+                          url: '/shorten',
+                          data: $('form').serialize(),
+                          type: 'GET',
+                          success: function(response) {
+                              console.log(response);
+                              var link = "http://{{ request.host }}/" + response;
+                              $('#short-url').prepend("<a href=" + link + ">" + link + "</a>");
+                              $('#short-url').toggle();
+                          },
+                          error: function(error) {
+                              console.log(error);
+                          }
+                      });
+              }
+          });
+          $(document).keypress(function(e) {
+              if(e.which == 13) {
+                  e.preventDefault();
+                  $('form button').click();
+              }
+          });
+       });
+    </script>
+</head>
+
+<body>
+<div id="main">
+
+    <div class="header">
+            <h1><a href="/">Shortly</a></h1>
+                <h2>Convert a long URL link to a short form</h2>
+                  
+        <form class="pure-form">
+            <fieldset>
+                <input type="url" name="url" placeholder="URL">
+                <button type="button" class="pure-button pure-button-primary">Shorten</button>
+            </fieldset>
+        </form>
+
+
+        <div id="short-url" style="display:none; font-weight: bold">
+            <button class="clip-button pure-button" data-clipboard-target="#short-url">
+                Copy
+            </button>
+        </div>
+
+        </div>
+    </div>
+
+</div>
+</body>
+</html>
