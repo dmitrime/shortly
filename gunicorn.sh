@@ -1,2 +1,2 @@
 #!/bin/sh
-gunicorn -w 4 -b 0.0.0.0:5000 server:app
+gunicorn -w 4 -b 0.0.0.0:8080 server:app
