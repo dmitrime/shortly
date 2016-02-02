@@ -1,8 +1,10 @@
 # -*- coding: utf-8 -*-
 
+import os
 from redis import Redis
 from shorten import shorten
-redis = Redis()
+redis = Redis(host=os.environ.get("REDIS_PORT_6379_TCP_ADDR", 'localhost'),
+              port=os.environ.get("REDIS_PORT_6379_TCP_PORT", 6379))
 
 MINLEN         = 4
 REDIS_URL_FMT  = 'u:{}'
