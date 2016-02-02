@@ -9,4 +9,4 @@ COPY . /shortly
 WORKDIR /shortly
 RUN pip install -r requirements.txt
 
-CMD ["gunicorn.sh"]
+CMD ["./gunicorn.sh"]
