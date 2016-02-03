@@ -30,6 +30,7 @@
           $('form button').click(function(event){
 
               if ($('#short-url a').length == 0) {
+                  $('#short-url').prepend('<a></a>'); // dummy link
                   $.ajax({
                           url: '/shorten',
                           data: $('form').serialize(),
@@ -37,7 +38,8 @@
                           success: function(response) {
                               console.log(response);
                               var link = "http://{{ request.host }}/" + response;
-                              $('#short-url').prepend("<a href=" + link + ">" + link + "</a>");
+                              $('#short-url a').attr("href", link);
+                              $('#short-url a').text(link);
                               $('#short-url').toggle();
                               $('#qrcode').qrcode({
                                   "size": 100,
